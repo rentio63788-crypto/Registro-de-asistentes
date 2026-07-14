@@ -87,14 +87,14 @@ const sb = (SUPABASE_URL && SUPABASE_ANON_KEY && SUPABASE_URL !== 'PEGA_AQUI_LA_
           </div>
           <div class="field full">
             <label for="fComercial">Comercial que registra *</label>
-            <input id="fComercial" list="comercialesList" placeholder="Escribe tu nombre">
-            <datalist id="comercialesList"></datalist>
+            <select id="fComercial">
+              <option value="">Seleccionar comercial...</option>
+            </select>
           </div>
         </div>
 
         <div class="submit-row">
           <button class="primary" id="submitBtn" onclick="submitRegistration()">Registrar inscripción</button>
-          <span class="hint">Después de enviar, el formulario se limpia para el siguiente asistente.</span>
         </div>
 
         <div class="toast" id="toast"></div>

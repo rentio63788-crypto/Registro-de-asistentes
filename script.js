@@ -129,8 +129,11 @@ async function saveComercialIfNew(name){
 
 async function refreshComercialesDatalist(){
   const list = await loadComerciales();
-  const dl = document.getElementById('comercialesList');
-  dl.innerHTML = list.map(n=>`<option value="${n.replace(/"/g,'&quot;')}">`).join('');
+  const sel = document.getElementById('fComercial');
+  const current = sel.value;
+  sel.innerHTML = '<option value="">Seleccionar comercial...</option>' +
+    list.map(n=>`<option value="${n.replace(/"/g,'&quot;')}">${n}</option>`).join('');
+  if(list.includes(current)) sel.value = current;
 }
 
 /* ================= SUBMIT ================= */
