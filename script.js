@@ -32,14 +32,16 @@ function findCharla(id){ return CHARLAS.find(c=>c.id===id); }
 function countFor(charlaId){ return allRegistrations.filter(r=>r.charlaId===charlaId).length; }
 
 /* ================= RENDER ================= */
+let regDay = 'MIE';
+
 function renderDayTabs(){
   const wrap = document.getElementById('dayTabs');
   wrap.innerHTML = '';
   Object.keys(DAY_LABELS).forEach(day=>{
     const btn = document.createElement('button');
     btn.textContent = DAY_LABELS[day];
-    if(day==='MIE') btn.classList.add('active');
-    btn.onclick = ()=>{ renderDayTabs(); renderCharlaList(); };
+    if(day===regDay) btn.classList.add('active');
+    btn.onclick = ()=>{ regDay = day; renderDayTabs(); renderCharlaList(); };
     wrap.appendChild(btn);
   });
 }
@@ -47,7 +49,7 @@ function renderDayTabs(){
 function renderCharlaList(){
   const wrap = document.getElementById('charlaList');
   wrap.innerHTML = '';
-  CHARLAS.forEach(c=>{
+  CHARLAS.filter(c=>c.day===regDay).forEach(c=>{
     const card = document.createElement('div');
     card.className = 'charla-card' + (c.id===selectedCharlaId ? ' selected' : '');
     card.onclick = ()=> selectCharla(c.id);
