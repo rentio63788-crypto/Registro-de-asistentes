@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Registro de charlas · Sala Académica Internacional Vet</title>
+<title>Registro de asistentes · Sala Académica Internacional Vet</title>
+<script src="https://unpkg.com/lucide@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL    = 'https://xwbcpsczunaapnqerpqw.supabase.co';
@@ -301,10 +302,6 @@ h2.section-title .num{
   display:flex;
   align-items:center;
   gap:4px;
-}
-.charla-card .speaker::before{
-  content:'👤';
-  font-size:11px;
 }
 .charla-card .count-badge{
   font-family:'JetBrains Mono', monospace;
@@ -793,9 +790,9 @@ tbody tr:hover{background:#F8FAFC;}
   </header>
 
   <nav class="tabs">
-    <button id="tabBtnRegistrar" class="active" onclick="switchTab('registrar')">📝 Registrar</button>
-    <button id="tabBtnAsistencia" onclick="switchTab('asistencia')">✅ Asistencia</button>
-    <button id="tabBtnSeguimiento" onclick="switchTab('seguimiento')">📊 Panel de seguimiento</button>
+    <button id="tabBtnRegistrar" class="active" onclick="switchTab('registrar')"><i data-lucide="pen-square" style="width:16px;height:16px"></i> Registrar</button>
+    <button id="tabBtnAsistencia" onclick="switchTab('asistencia')"><i data-lucide="check-circle" style="width:16px;height:16px"></i> Asistencia</button>
+    <button id="tabBtnSeguimiento" onclick="switchTab('seguimiento')"><i data-lucide="bar-chart-3" style="width:16px;height:16px"></i> Panel de seguimiento</button>
   </nav>
 
   <main>
@@ -861,7 +858,7 @@ tbody tr:hover{background:#F8FAFC;}
       <div class="card" id="checkinListCard" style="display:none;">
         <div class="dash-actions">
           <h2 class="section-title" style="margin:0;"><span class="num">2</span> Marca quién asistió</h2>
-          <button class="small-btn" onclick="closeCheckin()">← Elegir otra charla</button>
+          <button class="small-btn" onclick="closeCheckin()"><i data-lucide="arrow-left" style="width:14px;height:14px"></i> Elegir otra charla</button>
         </div>
         <div class="selected-banner">
           <span>Charla: <b id="checkinCharlaLabel"></b></span>
@@ -887,8 +884,8 @@ tbody tr:hover{background:#F8FAFC;}
         <div class="dash-actions">
           <h2 class="section-title" style="margin:0;"><span class="refresh-dot"></span>Resumen general</h2>
           <div class="right">
-            <button class="small-btn" onclick="loadDashboard()">↻ Actualizar</button>
-            <button class="small-btn" onclick="exportCSV()">⬇ Exportar CSV</button>
+            <button class="small-btn" onclick="loadDashboard()"><i data-lucide="refresh-cw" style="width:14px;height:14px"></i> Actualizar</button>
+            <button class="small-btn" onclick="exportCSV()"><i data-lucide="download" style="width:14px;height:14px"></i> Exportar CSV</button>
           </div>
         </div>
         <div class="stat-grid" id="statGrid"></div>
@@ -911,7 +908,7 @@ tbody tr:hover{background:#F8FAFC;}
       </div>
 
       <div class="card">
-        <h2 class="section-title"><span class="num">≡</span> Listado completo de inscritos</h2>
+        <h2 class="section-title"><i data-lucide="list" style="width:18px;height:18px;color:var(--ink-400);flex-shrink:0"></i> Listado completo de inscritos</h2>
         <div class="toolbar">
           <input class="grow" id="searchInput" type="text" placeholder="Buscar por nombre, empresa o comercial..." oninput="renderFullTable()">
           <select id="filterDay" onchange="onFilterDayChange()">
@@ -1010,7 +1007,7 @@ function renderCharlaList(){
       <div class="time">${c.time}</div>
       <div class="info">
         <div class="title">${c.title}</div>
-        <div class="speaker">${c.speaker}</div>
+        <div class="speaker"><i data-lucide="user" style="width:12px;height:12px;flex-shrink:0"></i> ${c.speaker}</div>
       </div>
       <div class="count-badge">${countFor(c.id)} inscritos</div>
     `;
@@ -1091,7 +1088,7 @@ async function refreshComercialesDatalist(){
 /* ================= SUBMIT ================= */
 function showToast(msg, ok){
   const t = document.getElementById('toast');
-  t.textContent = msg;
+  t.innerHTML = msg;
   t.className = 'toast show ' + (ok ? 'ok' : 'err');
   setTimeout(()=>{ t.className = 'toast'; }, 4200);
 }
@@ -1147,7 +1144,7 @@ async function submitRegistration(){
     allRegistrations.push(reg);
     await refreshComercialesDatalist();
     renderCharlaList();
-    showToast('✓ Inscripción registrada. Total en esta charla: ' + countFor(c.id), true);
+    showToast('<i data-lucide="check-circle" style="width:16px;height:16px"></i> Inscripción registrada. Total en esta charla: ' + countFor(c.id), true);
     fireConfetti();
     document.getElementById('fNombre').value = '';
     document.getElementById('fTelefono').value = '';
@@ -1225,7 +1222,7 @@ function renderCheckinCharlaList(){
       <div class="time">${c.time}</div>
       <div class="info">
         <div class="title">${c.title}</div>
-        <div class="speaker">${c.speaker}</div>
+        <div class="speaker"><i data-lucide="user" style="width:12px;height:12px;flex-shrink:0"></i> ${c.speaker}</div>
       </div>
       <div class="count-badge">${presentes} / ${total} asistieron</div>
     `;
@@ -1289,7 +1286,7 @@ function renderCheckinList(){
         <div class="a-meta">${r.empresa ? r.empresa+' · ' : ''}${r.telefono||''}${r.comercial ? ' · registró: '+r.comercial : ''}</div>
       </div>
       <button class="a-toggle ${r.asistio ? 'to-absent' : 'to-present'}" onclick="toggleAsistencia('${r.id}')">
-        ${r.asistio ? '✓ Presente' : 'Marcar presente'}
+        ${r.asistio ? '<i data-lucide="check-circle" style="width:14px;height:14px"></i> Presente' : 'Marcar presente'}
       </button>
     </div>
   `).join('');
@@ -1459,7 +1456,7 @@ function renderFullTable(){
       <td>${r.empresa||''}</td>
       <td>${r.charlaHora||''} — ${(r.charlaTitulo||'').slice(0,40)}${(r.charlaTitulo||'').length>40?'…':''}</td>
       <td>${r.comercial||''}</td>
-      <td>${r.asistio ? '<span style="color:var(--success-500);font-weight:700;">✓ Sí</span>' : '<span class="hint">Pendiente</span>'}</td>
+      <td>${r.asistio ? '<span style="color:var(--success-500);font-weight:700;"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Sí</span>' : '<span class="hint">Pendiente</span>'}</td>
     </tr>`;
   }).join('');
 
@@ -1495,12 +1492,22 @@ function exportCSV(){
 }
 
 /* ================= BOOT ================= */
-(async function boot(){
+(function boot(){
   renderDayTabs();
   renderCharlaList();
-  await refreshComercialesDatalist();
-  allRegistrations = await loadAllRegistrations();
-  renderCharlaList();
+  refreshComercialesDatalist().then(()=> loadAllRegistrations().then(r=>{
+    allRegistrations = r;
+    renderCharlaList();
+  }));
+  // Procesar iconos Lucide en DOM dinámico (con debounce)
+  let _t;
+  const obs = new MutationObserver(()=>{
+    clearTimeout(_t);
+    _t = setTimeout(()=> lucide && lucide.createIcons && lucide.createIcons(), 50);
+  });
+  obs.observe(document.getElementById('app'), { childList:true, subtree:true });
+  // Inicializar iconos existentes
+  if(lucide) lucide.createIcons();
 })();
 </script>
 </body>
